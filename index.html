@@ -36,15 +36,16 @@
         document.getElementById("habitForm").addEventListener("submit", function(event) {
             event.preventDefault();
             const formData = new FormData(this);
-            const formDataObj = Object.fromEntries(formData.entries());
-            const jsonData = JSON.stringify(formDataObj);
-
+            const habitData = {};
+            formData.forEach(function(value, key){
+                habitData[key] = value;
+            });
             fetch('/save', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: jsonData
+                body: JSON.stringify(habitData)
             })
             .then(response => response.json())
             .then(data => {
