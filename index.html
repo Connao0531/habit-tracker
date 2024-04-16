@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Hábitos</title>
+</head>
+<body>
+    <h1>Registro de Hábitos</h1>
+    <form id="habitForm">
+        <label for="diaSemana">¿Qué día de la semana es hoy?</label>
+        <input type="text" id="diaSemana" name="diaSemana" required>
+        <br><br>
+        <label for="dormir">¿Dormiste?</label>
+        <select id="dormir" name="dormir" required>
+            <option value="Si">Sí</option>
+            <option value="No">No</option>
+        </select>
+        <br><br>
+        <label for="ejercicio">¿Hiciste ejercicio?</label>
+        <select id="ejercicio" name="ejercicio" required>
+            <option value="Si">Sí</option>
+            <option value="No">No</option>
+        </select>
+        <br><br>
+        <label for="leer">¿Leíste?</label>
+        <select id="leer" name="leer" required>
+            <option value="Si">Sí</option>
+            <option value="No">No</option>
+        </select>
+        <br><br>
+        <button type="submit">Guardar</button>
+    </form>
+
+    <script>
+        document.getElementById("habitForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const formDataObj = Object.fromEntries(formData.entries());
+            const jsonData = JSON.stringify(formDataObj);
+
+            fetch('/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
